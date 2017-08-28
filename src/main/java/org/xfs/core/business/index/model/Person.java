@@ -27,6 +27,11 @@ public class Person implements Serializable {
     private int sex = 0;
     private String addr;
     private String state = "YES";
+    
+    /**
+     * 手机号
+     */
+    private String mobile;
 
     public String getName() {
         return name;
@@ -76,7 +81,15 @@ public class Person implements Serializable {
         this.state = state;
     }
 
-    @Override
+    public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	@Override
     public String toString() {
         return "Person [name=" + name + ", age=" + age + ", email=" + email + ", sex=" + sex + ", addr=" + addr + ", state=" + state + "]";
     }
