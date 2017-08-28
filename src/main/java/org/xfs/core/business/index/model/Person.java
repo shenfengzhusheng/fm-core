@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -15,7 +16,7 @@ public class Person implements Serializable {
      */
     private static final long serialVersionUID = 1686593935051552115L;
 
-    @NotEmpty(message = "姓名不能为空！")
+    @NotEmpty(message = "姓名不能为能空！")
     private String name;
 
     @Max(value = 150, message = "年龄不能大于150岁")
@@ -31,6 +32,8 @@ public class Person implements Serializable {
     /**
      * 手机号 666
      */
+
+    @NotNull(message = "电话不能为空")
     private String mobile;
 
     public String getName() {
