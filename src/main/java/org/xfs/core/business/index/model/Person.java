@@ -23,7 +23,7 @@ public class Person implements Serializable {
     private int age;
     @Email(message = "邮箱格式不合法！")
     private String email;
-
+   
     private int sex = 0;
     private String addr;
     private String state = "YES";
