@@ -29,7 +29,7 @@ public class Person implements Serializable {
     private String state = "YES";
     
     /**
-     * 手机号
+     * 手机号 test
      */
     private String mobile;
 
