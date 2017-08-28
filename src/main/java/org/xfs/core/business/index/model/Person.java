@@ -15,7 +15,7 @@ public class Person implements Serializable {
      */
     private static final long serialVersionUID = 1686593935051552115L;
 
-    @NotEmpty(message = "姓名不空！")
+    @NotEmpty(message = "姓名不能为空！")
     private String name;
 
     @Max(value = 150, message = "年龄不能大于150岁")
@@ -23,13 +23,13 @@ public class Person implements Serializable {
     private int age;
     @Email(message = "邮箱格式不合法！")
     private String email;
-   
+
     private int sex = 0;
     private String addr;
     private String state = "YES";
-    
+
     /**
-     * 手机号  666
+     * 手机号 666
      */
     private String mobile;
 
@@ -82,14 +82,14 @@ public class Person implements Serializable {
     }
 
     public String getMobile() {
-		return mobile;
-	}
+        return mobile;
+    }
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return "Person [name=" + name + ", age=" + age + ", email=" + email + ", sex=" + sex + ", addr=" + addr + ", state=" + state + "]";
     }
