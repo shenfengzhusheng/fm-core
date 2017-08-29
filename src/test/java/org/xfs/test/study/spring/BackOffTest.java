@@ -14,6 +14,7 @@ import org.springframework.util.backoff.FixedBackOff;
  * @author Jeken.Liu
  *
  */
+@SuppressWarnings("deprecation")
 public class BackOffTest {
     // @Test
     public void testFixedBackOff() {
