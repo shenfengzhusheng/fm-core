@@ -3,6 +3,7 @@ package org.xfs.core.util.encrypt;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.springframework.util.Base64Utils;
 import org.xfs.core.util.string.StringUtil;
 
 import sun.misc.BASE64Decoder;
@@ -15,6 +16,7 @@ public class MD5Util {
         String s = "443596";
         System.out.println(md5(s));
         // c4ca4238a0b923820dcc509a6f75849b
+        // 8e07ed8cd9429fb607281e2fc1554f11
     }
 
     /**
@@ -57,6 +59,7 @@ public class MD5Util {
      * @return String
      */
     public static String encode(byte[] bstr) {
+
         return new sun.misc.BASE64Encoder().encode(bstr);
     }
 
@@ -66,7 +69,7 @@ public class MD5Util {
             return "";
         BASE64Decoder decoder = new BASE64Decoder();
         try {
-            byte[] b = decoder.decodeBuffer(s);
+            byte[] b = Base64Utils.decodeFromString(s);
             return new String(b);
         } catch (Exception e) {
             return "";
