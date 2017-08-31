@@ -8,7 +8,7 @@ public interface OrderRepository {
     public void putOrder(Order order);
 
     /**
-     * 获取订单2222212222222
+     * 获取订单
      * project:fm-core
      * @param orderId
      * @return
@@ -18,7 +18,7 @@ public interface OrderRepository {
     public Order getOrder(String orderId);
 
     /**
-     * 获取全部订单dds 
+     * 获取全部订单
      * project:fm-core
      * @return 
      * author:xifengshan 
