@@ -7,6 +7,7 @@ import org.springframework.util.backoff.BackOff;
 import org.springframework.util.backoff.BackOffExecution;
 import org.springframework.util.backoff.ExponentialBackOff;
 import org.springframework.util.backoff.FixedBackOff;
+import org.xfs.core.util.DateUtil;
 
 /**
  * 退避实现（比如网络连接失败后延迟多久重试）
@@ -45,7 +46,8 @@ public class BackOffTest {
         BackOffExecution execution = backOff.start();
 
         for (int i = 1; i <= 18; i++) {
-            System.out.println(execution.nextBackOff());
+        	long time=execution.nextBackOff();
+            System.out.println(time+"===="+DateUtil.getNowTime());
         }
         Assert.assertEquals(BackOffExecution.STOP, execution.nextBackOff());
     }
