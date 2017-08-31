@@ -14,9 +14,13 @@ public class TestDemo {
         //
         if (str.startsWith("[{")) {
             JSONArray arry = JSONObject.parseArray(str);
+            System.out.println(arry);
+
         } else {
             JSONObject json = JSONObject.parseObject(str);
+            System.out.println(json);
         }
+
         // String status = json.getString("status");
         // if (status != null && "Error".equals(status)) {
         // System.out.println("失败！");

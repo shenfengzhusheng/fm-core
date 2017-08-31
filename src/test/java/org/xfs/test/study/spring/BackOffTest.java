@@ -15,6 +15,7 @@ import org.xfs.core.util.DateUtil;
  * @author Jeken.Liu
  *
  */
+@SuppressWarnings("deprecation")
 public class BackOffTest {
     // @Test
     public void testFixedBackOff() {

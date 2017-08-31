@@ -2,19 +2,26 @@ package org.xfs.core.util.encrypt;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
-import org.xfs.core.util.string.StringUtil;
 
-import sun.misc.BASE64Decoder;
 
-@SuppressWarnings("restriction")
 public class MD5Util {
-    private static final String slat = "@123feng8876...^&00935";
+    private static final String slat = "@123feng8876...^&00935========";
 
     public static void main(String[] args) {
-        String s = "443596";
+        String s = "443596777777777777777777";
+        String str=Base64.getEncoder().encodeToString(s.getBytes());
+        System.out.println(str);//[B@15db9742
+        System.out.println("decode:"+decode(s));
+        System.out.println("encode:"+encode(decode(s)));
+
+        System.out.println(new String(Base64.getDecoder().decode(str.getBytes())));
+        
+        
         System.out.println(md5(s));
         // c4ca4238a0b923820dcc509a6f75849b
+        // 8e07ed8cd9429fb607281e2fc1554f11
     }
 
     /**
@@ -56,20 +63,21 @@ public class MD5Util {
      * @param bstr
      * @return String
      */
-    public static String encode(byte[] bstr) {
-        return new sun.misc.BASE64Encoder().encode(bstr);
+    public static String decode(String key) {
+    	String value=Base64.getEncoder().encodeToString(key.getBytes());
+        return value;
     }
 
-
-    public static String decode(String s) {
-        if (StringUtil.isEmpty(s))
-            return "";
-        BASE64Decoder decoder = new BASE64Decoder();
-        try {
-            byte[] b = decoder.decodeBuffer(s);
-            return new String(b);
-        } catch (Exception e) {
-            return "";
-        }
+    
+    /**
+     * 编码
+     * 
+     * @param bstr
+     * @return String
+     */
+    public static String encode(String key) {
+    	String value=new String(Base64.getDecoder().decode(key));
+        return value;
     }
+
 }

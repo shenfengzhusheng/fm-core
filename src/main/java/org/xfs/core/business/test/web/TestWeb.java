@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.xfs.core.business.test.model.TestVo;
@@ -22,7 +21,7 @@ import redis.clients.jedis.JedisCluster;
 
 @Controller
 @RequestMapping("/test")
-public class TestWeb extends BaseWeb{
+public class TestWeb extends BaseWeb {
     private static Logger logger = LoggerFactory.getLogger(TestWeb.class);
     @Resource
     TestService testService;
@@ -39,8 +38,8 @@ public class TestWeb extends BaseWeb{
     @RequestMapping("/test")
     @ResponseBody
     public Object test(TestVo vo) {
-      //  System.out.println(super.getRequest().getContentType().toString()+"value:" + vo.getValue());
-        System.out.println( RequestInfoUtil.getRequestInfo(super.getRequest()));
+        // System.out.println(super.getRequest().getContentType().toString()+"value:" + vo.getValue());
+        System.out.println(RequestInfoUtil.getRequestInfo(super.getRequest()));
         // String path = this.getClass().getResource("/").getPath();
         // // String path = request.getRealPath("/");
         // path = path + File.separator + "static" + File.separator + "test.html";
