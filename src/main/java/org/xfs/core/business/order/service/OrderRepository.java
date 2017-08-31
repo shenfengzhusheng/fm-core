@@ -18,7 +18,7 @@ public interface OrderRepository {
     public Order getOrder(String orderId);
 
     /**
-     * 获取全部订单dd 
+     * 获取全部订单dds 
      * project:fm-core
      * @return 
      * author:xifengshan 
