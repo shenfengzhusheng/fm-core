@@ -47,7 +47,14 @@ public class BackOffTest {
 
         for (int i = 1; i <= 18; i++) {
         	long time=execution.nextBackOff();
+        	try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             System.out.println(time+"===="+DateUtil.getNowTime());
+
         }
         Assert.assertEquals(BackOffExecution.STOP, execution.nextBackOff());
     }
