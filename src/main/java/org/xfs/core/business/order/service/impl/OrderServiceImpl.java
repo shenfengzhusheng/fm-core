@@ -32,7 +32,10 @@ public class OrderServiceImpl implements OrderServiceI {
         order.setStatus(OrderStatus.CREATED);
         orderRepository.putOrder(order);
         logger.info("Application : sending order request {}", order);
-        messageSender.sendMessage(order);
+        for (int i = 0; i < 100; i++) {
+            messageSender.sendMessage(order);
+
+        }
         if (logger.isInfoEnabled()) {
             logger.info("------------------------------end send------------------------------");
         }

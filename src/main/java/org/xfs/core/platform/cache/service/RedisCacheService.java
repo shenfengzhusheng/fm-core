@@ -1,6 +1,10 @@
 package org.xfs.core.platform.cache.service;
 
 
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -11,7 +15,9 @@ import org.springframework.util.StopWatch;
 import org.xfs.core.util.SerializeUtils;
 import org.xfs.core.util.string.StringUtil;
 
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
+import redis.clients.jedis.JedisPool;
 
 import com.alibaba.fastjson.JSON;
 
@@ -96,6 +102,7 @@ public class RedisCacheService {
 
     /**
      * 设值
+     * 
      * @param key
      * @param value
      * @param seconds
@@ -116,6 +123,7 @@ public class RedisCacheService {
 
     /**
      * 设置缓存
+     * 
      * @param key
      * @return
      */
@@ -129,6 +137,7 @@ public class RedisCacheService {
 
     /**
      * 删除指定key的缓存
+     * 
      * @param key
      * @return
      */
@@ -145,6 +154,7 @@ public class RedisCacheService {
 
     /**
      * 数量添加
+     * 
      * @param key
      * @return
      */
@@ -154,6 +164,7 @@ public class RedisCacheService {
 
     /**
      * 设置缓存缓存时长
+     * 
      * @param key
      * @param seconds
      * @return
@@ -306,10 +317,10 @@ public class RedisCacheService {
         try {
             json = this.jedisCluster.get(key);
         } catch (Exception e) {
-           logger.error("无缓存:",e);
+            logger.error("无缓存:", e);
         }
         if (!StringUtil.isEmpty(json)) {
-          //  System.out.println("cache json:" + json);
+            // System.out.println("cache json:" + json);
             obj = JSON.parseObject(Base64Utils.decodeFromString(json), clazz);
         }
         return obj;
@@ -317,9 +328,35 @@ public class RedisCacheService {
 
     public boolean append(String key, String value) {
         boolean result = false;
+
         // if(this.jedisCluster.exists(key))
         return result;
     }
 
-  
+    public Set<String> keys(String key) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Start getting keys...");
+
+        }
+        Set<String> treeSet = new TreeSet<String>();
+        Map<String, JedisPool> map = this.jedisCluster.getClusterNodes();
+        for (String k : map.keySet()) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Getting keys from: {}", k);
+            }
+            JedisPool jp = map.get(k);
+            Jedis connection = jp.getResource();
+            try {
+                treeSet.addAll(connection.keys(key + "*"));
+            } catch (Exception e) {
+                logger.error("Getting keys error: {}", e);
+            } finally {
+                logger.debug("Connection closed.");
+                connection.close();// 用完一定要close这个链接！！！
+            }
+        }
+        return treeSet;
+    }
+
+
 }

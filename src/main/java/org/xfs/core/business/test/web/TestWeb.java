@@ -39,7 +39,8 @@ public class TestWeb extends BaseWeb {
     @ResponseBody
     public Object test(TestVo vo) {
         // System.out.println(super.getRequest().getContentType().toString()+"value:" + vo.getValue());
-        System.out.println(RequestInfoUtil.getRequestInfo(super.getRequest()));
+        // logger.info(RequestInfoUtil.getRequestInfo(super.getRequest()));
+        RequestInfoUtil.getRequestInfo(super.getRequest());
         // String path = this.getClass().getResource("/").getPath();
         // // String path = request.getRealPath("/");
         // path = path + File.separator + "static" + File.separator + "test.html";
@@ -67,11 +68,11 @@ public class TestWeb extends BaseWeb {
         // new JsonFormatUtil().outFile("test", "ff");
         try {
             // System.out.println("----------------------------------->" + this.jedisCluster.set("88gun", "germany flak 88 gun"));
-            System.out.println("----------------------------------->" + this.jedisCluster.get("88gun"));
+            logger.info("----------------------------------->" + this.jedisCluster.get("88gun"));
             // System.out.println("----------------------cached--------->"+this.redisCacheUtil.set("oper", "中国", 8000));
             // System.out.println("----------------------cached--------->" + this.redisCacheUtil.get("oper"));
             obj = this.cacheService.getPerson("key");
-            System.out.println("----------------------cached--------->" + obj);
+            logger.info("----------------------cached--------->" + obj);
             // System.out.println("----------------------cached--------->" + this.testService.cache("key"));
             // TestPo t=new TestPo();
             // t.setCode("1");
