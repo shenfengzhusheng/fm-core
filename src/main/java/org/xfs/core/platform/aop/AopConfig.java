@@ -23,6 +23,7 @@ public class AopConfig {
     private ThreadLocal<StopWatch> sw = new ThreadLocal<StopWatch>();
 
     @Pointcut("execution(* ck.org.xfs.core.business..web.*Web.*(..))")
+    // @Pointcut("execution(* org.xfs.core.business.test.web.TestWeb.test(..))")
     private void point() {};
 
     @Before("point() && args(name) ")

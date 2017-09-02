@@ -11,14 +11,14 @@ public class MD5Util {
 
     public static void main(String[] args) {
         String s = "443596777777777777777777";
-        String str=Base64.getEncoder().encodeToString(s.getBytes());
-        System.out.println(str);//[B@15db9742
-        System.out.println("decode:"+decode(s));
-        System.out.println("encode:"+encode(decode(s)));
+        String str = Base64.getEncoder().encodeToString(s.getBytes());
+        System.out.println(str);// [B@15db9742
+        System.out.println("decode:" + decode(s));
+        System.out.println("encode:" + encode(decode(s)));
 
         System.out.println(new String(Base64.getDecoder().decode(str.getBytes())));
-        
-        
+
+
         System.out.println(md5(s));
         // c4ca4238a0b923820dcc509a6f75849b
         // 8e07ed8cd9429fb607281e2fc1554f11
@@ -64,11 +64,10 @@ public class MD5Util {
      * @return String
      */
     public static String decode(String key) {
-    	String value=Base64.getEncoder().encodeToString(key.getBytes());
-        return value;
+        return Base64.getEncoder().encodeToString(key.getBytes());
     }
 
-    
+
     /**
      * 编码
      * 
@@ -76,8 +75,7 @@ public class MD5Util {
      * @return String
      */
     public static String encode(String key) {
-    	String value=new String(Base64.getDecoder().decode(key));
-        return value;
+        return new String(Base64.getDecoder().decode(key));
     }
 
 }
