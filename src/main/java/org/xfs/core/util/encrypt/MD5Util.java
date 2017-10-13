@@ -4,19 +4,23 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 
 public class MD5Util {
-    private static final String slat = "@123feng8876...^&00935========";
+    private static final String slat = "@123feng8876...^&00935===3===*==$";
+    private static final Logger logger = LoggerFactory.getLogger(MD5Util.class);
 
     public static void main(String[] args) {
-        String s = "443596777777777777777777";
-        String str = Base64.getEncoder().encodeToString(s.getBytes());
-        System.out.println(str);// [B@15db9742
+        String s = "4435967777777777777777778";
+        String encodeContent = Base64.getEncoder().encodeToString(s.getBytes());
+        System.out.println(encodeContent);// [B@15db9742
         System.out.println("decode:" + decode(s));
         System.out.println("encode:" + encode(decode(s)));
 
-        System.out.println(new String(Base64.getDecoder().decode(str.getBytes())));
+        System.out.println(new String(Base64.getDecoder().decode(encodeContent.getBytes())));
 
 
         System.out.println(md5(s));
@@ -37,7 +41,7 @@ public class MD5Util {
             md.update(content.getBytes());
             byte[] byteDigest = md.digest();
             int i;
-            StringBuffer buf = new StringBuffer("");
+            StringBuilder buf = new StringBuilder();
             for (int offset = 0; offset < byteDigest.length; offset++) {
                 i = byteDigest[offset];
                 if (i < 0)
@@ -51,7 +55,7 @@ public class MD5Util {
             // 16位的加密
             // return buf.toString().substring(8, 24);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            logger.error("密码加密失败：{}", e);
             return null;
         }
     }
