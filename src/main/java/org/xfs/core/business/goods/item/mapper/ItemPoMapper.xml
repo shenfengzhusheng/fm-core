@@ -10,17 +10,8 @@
   <sql id="Base_Column_List" >
     item_id, item_code, item_name, status
   </sql>
-  
-  <select id="getItem" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from tb_item
-    where item_id = #{itemId,jdbcType=BIGINT}
-  </select>
-  
-  <delete id="removeItem" parameterType="org.xfs.core.business.goods.item.po.ItemPo">
-    DELETE FROM tb_item
-    <trim prefix="WHERE" prefixOverrides="AND | OR">
+  <sql id="Condition">
+  	 <trim prefix="WHERE" prefixOverrides="AND |OR ">
     	<if test="itemId != null" > 
     		AND item_id = #{itemId,jdbcType=BIGINT}
     	</if>
@@ -32,16 +23,23 @@
     	</if>
     	<if test="status != null" >
         	AND status=#{status,jdbcType=BIT}
-      </if>
+       </if>
     </trim>
+  </sql>
+  <select id="getItem" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM tb_item
+    WHERE item_id = #{itemId,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="removeItem" parameterType="org.xfs.core.business.goods.item.po.ItemPo">
+    DELETE FROM tb_item  <include refid="Condition"/>
   </delete>
  
   <insert id="addItem" parameterType="org.xfs.core.business.goods.item.po.ItemPo" >
-    insert into tb_item
+    INSERT INTO tb_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="itemId != null" >
-        item_id,
-      </if>
       <if test="itemCode != null" >
         item_code,
       </if>
@@ -53,9 +51,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="itemId != null" >
-        #{itemId,jdbcType=BIGINT},
-      </if>
       <if test="itemCode != null" >
         #{itemCode,jdbcType=VARCHAR},
       </if>
@@ -84,7 +79,6 @@
     	<if test="itemId != null" > 
     		AND item_id = #{itemId,jdbcType=BIGINT}
     	</if>
-    
     	<if test="status != null" >
         	AND status=#{status,jdbcType=BIT}
       </if>

@@ -10,7 +10,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 import org.xfs.core.business.index.model.Person;
 
@@ -25,65 +27,31 @@ import com.alibaba.fastjson.JSON;
  * @datetime:2016年2月17日
  */
 public class HttpConnection {
-    @SuppressWarnings("unused")
-    private URL url;
-    @SuppressWarnings("unused")
-    private String charset;
+    private static final String CHARSET = "UTF-8";
 
-    public HttpConnection(URL url) {
-        this.url = url;
-    }
+    public static void tuNig() throws Exception {
+        // String url =
+        // "http://www.sh-ntkj.com/systemtemp/publicaction.do?method=getAllCarInfoByCard&allId=%E6%B2%AADBE633,%E6%B2%AABMZ232";
+        String url = "http://www.sh-ntkj.com/systemtemp/publicaction.do";
+        String content = "method=getAllCarInfoByCard&allId=" + URLEncoder.encode("沪AWF311", "UTF-8");
+        // String content = "method=getAllCarInfoByCard&allId=沪DBE633,沪BMZ232";
 
-    public HttpConnection(URL url, String charset) {
-        this.url = url;
-        this.charset = charset;
-    }
-
-    public static class A {
-        private String name;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-
-    }
-
-    public static void toJson() {
-        // BdArea area=new BdArea();
-        // area.setAreaCode("1");
-        // area.setAreaName("测试");
-        //
-        // BdArea area2=new BdArea();
-        // area2.setAreaCode("2");
-        // area2.setAreaName("测试");
-        // BdArea area3=new BdArea();
-        // area3.setAreaCode("3");
-        // area3.setAreaName("测试");
-        // List<BdArea>list=new ArrayList<>();
-        // list.add(area);
-        // list.add(area2);
-        //
-        // list.add(area3);
-        // Json json=new Json();
-        // json.setSuccess(true);
-        // json.setMsg("成功");
-        // A a=new A();
-        // a.setList(list);
-        // a.setName("ccc");
-        // json.setObj(a);
-        // Grid grid=new Grid();
-        // grid.setRows(list);
-        // grid.setTotal(3L);
-        // System.out.println(JSON.toJSON(grid));
+        // String result=URLEncoder.encode(s)
+        String method = "GET";
+        Integer verification = 0;
+        String contentType = "application/json;charset=UTF-8";
+        String charset = "UTF-8";
+        System.out.println("response:" + doSend(url, content, method, verification, contentType, charset));
+        // System.out.println("response:" + doGet(url, ""));
 
     }
 
     public static void main(String[] args) throws Exception {
+        tuNig();
+    }
+
+    public static void test() throws Exception {
+
         new Thread(() -> System.out.println("Hello world !")).start();
         // String url = "http://139.196.87.12:9084/interfaces/logisticsn/platRouteInfo.shtml";
         String url = "http://192.168.0.193:8080/jlt-interfaces/interfaces/logisticsn/platRouteInfo.shtml";
@@ -96,7 +64,7 @@ public class HttpConnection {
         p.setAddr("软二");
         p.setAge(30);
         p.setMobile("1112");
-        String content = FileManager.readAsString("d:\\data.txt");
+        String content = FileManager.toString("d:\\data.txt");
 
         List<PlatRouteInfoBO> list = JSON.parseArray(content, PlatRouteInfoBO.class);
         int splitSize = 10;
@@ -124,8 +92,10 @@ public class HttpConnection {
         // System.out.println("response:" + doJsonPost(url, content));
         // toJson();
 
+
     }
 
+    // 晶链通
     public static void send(String content) {
         // String url = "http://139.196.87.12:9084/interfaces/logisticsn/platRouteInfo.shtml";
         String url = "http://192.168.0.193:8080/jlt-interfaces/interfaces/logisticsn/platRouteInfo.shtml";
@@ -137,53 +107,106 @@ public class HttpConnection {
 
     }
 
+    public static String doGet(String url, String param) {
+        StringBuilder buf = new StringBuilder();
+        HttpURLConnection conn = null;
+        BufferedReader in = null;
+        try {
+            String urlName = url + param;
+            // 打开和URL之间的连接
+            conn = (HttpURLConnection) new URL(url).openConnection();
+            conn.setConnectTimeout(3000);
+            conn.setReadTimeout(18000);
+            // 设置通用的请求属性
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
+            // 建立实际的连接
+            conn.connect();
+            // 获取所有响应头字段
+            Map<String, List<String>> map = conn.getHeaderFields();
+            // 遍历所有的响应头字段
+            for (String key : map.keySet()) {
+                System.out.println(key + "--->" + map.get(key));
+            }
+            // 定义BufferedReader输入流来读取URL的响应
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                buf.append(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return buf.toString();
+    }
+
     @SuppressWarnings({})
     public static String doSend(String url, String content, String method, Integer verification, String contentType, String charset) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         HttpURLConnection conn = null;
         OutputStream out = null;
         BufferedReader in = null;
         try {
-            // conn.setConnectTimeout(GlobalContant.HTTP_CONNECTTIMEOUT);
-            // conn.setReadTimeout(GlobalContant.HTTP_READTIMEOUT);
-
+            // Get方法拼接url
+            if ("GET".equalsIgnoreCase(method)) {
+                if (content != null) {
+                    url = url + "?" + content;
+                    content = null;
+                }
+            }
             conn = (HttpURLConnection) new URL(url).openConnection();
             conn.setConnectTimeout(3000);
             conn.setReadTimeout(18000);
+            System.out.println("send message:" + content);
+            if (content != null) {
+                byte[] b = content.getBytes(CHARSET);
+                if (verification == 1) {// 需要校验
+                    String userName = "admin";
+                    String password = "admin";
+                    String input = userName + ":" + password; // 用户名以及登录密码
+                    if (input != null && input.trim().length() > 0) {
+                        @SuppressWarnings("restriction")
+                        String encoding = new sun.misc.BASE64Encoder().encode(input.getBytes());
+                        conn.setRequestProperty("Authorization", "Basic   " + encoding); // 设置用户名，用户密码
+                    }
 
-            byte[] b = content.getBytes("UTF-8");
-            if (verification == 1) {// 需要校验
-                String userName = "admin";
-                String password = "admin";
-                String input = userName + ":" + password; // 用户名以及登录密码
-                if (input != null && input.trim().length() > 0) {
-                    @SuppressWarnings("restriction")
-                    String encoding = new sun.misc.BASE64Encoder().encode(input.getBytes());
-                    conn.setRequestProperty("Authorization", "Basic   " + encoding); // 设置用户名，用户密码
+                } else if (verification == 2) {
+                    conn.setRequestProperty("X-Auth", "jiexiang@sh.com:123456");
                 }
-
-            } else if (verification == 2) {
-                conn.setRequestProperty("X-Auth", "jiexiang@sh.com:123456");
+                conn.setRequestProperty("accept", "*/*");
+                conn.setRequestProperty("Content-Type", contentType);
+                conn.setRequestProperty("Content-Length", String.valueOf(b.length));
+                conn.setRequestMethod(method);
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+                conn.setUseCaches(false);
+                out = conn.getOutputStream();
+                out.write(b);
+                out.flush();
+                out.close();
             }
-            conn.setRequestProperty("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-
-            conn.setRequestProperty("Content-Type", contentType);
-            conn.setRequestProperty("Content-Length", String.valueOf(b.length));
-            conn.setRequestMethod(method);
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            conn.setUseCaches(false);
-            out = conn.getOutputStream();
-            out.write(b);
-            out.flush();
-            out.close();
-
+            conn.connect();
+            // 获取所有响应头字段
+            Map<String, List<String>> map = conn.getHeaderFields();
+            // 遍历所有的响应头字段
+            for (String key : map.keySet()) {
+                System.out.println(key + "--->" + map.get(key));
+            }
             InputStreamReader isr = null;
             if (charset != null) {
                 isr = new InputStreamReader(conn.getInputStream(), charset);
                 // System.out.println("response encoding is:"+isr.getEncoding());
             } else {
-                isr = new InputStreamReader(conn.getInputStream(), "UTF-8");
+                isr = new InputStreamReader(conn.getInputStream(), CHARSET);
             }
             in = new BufferedReader(isr);
             String inputLine;
@@ -236,7 +259,7 @@ public class HttpConnection {
             out.print(content);
             out.flush();
             out.close();
-            BufferedReader bufReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+            BufferedReader bufReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), CHARSET));
             String line;
             while ((line = bufReader.readLine()) != null) {
                 // System.out.println(line);
@@ -272,7 +295,7 @@ public class HttpConnection {
             conn.setDoInput(true);
             conn.setUseCaches(false);
             conn.setRequestProperty("Connection", "Keep-Alive");
-            conn.setRequestProperty("Charset", "UTF-8");
+            conn.setRequestProperty("Charset", CHARSET);
             // 设置文件类型:
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             // 设置接收类型否则返回415错误

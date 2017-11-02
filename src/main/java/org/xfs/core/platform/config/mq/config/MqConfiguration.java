@@ -19,20 +19,22 @@ public class MqConfiguration {
     public static final String ORDER_QUEUE = "order-queue";
 
 
-    // @Bean
+    @Bean
     public ActiveMQConnectionFactory mqConnectionFactory() {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
+        connectionFactory.setMaxThreadPoolSize(10);
         connectionFactory.setBrokerURL(DEFAULT_BROKER_URL);
+        connectionFactory.setAlwaysSessionAsync(true);
         connectionFactory.setTrustedPackages(Arrays.asList("org.xfs.core"));
-        // connectionFactory.setUserName("admin");
-        // connectionFactory.setPassword("admin");
+        connectionFactory.setUserName("admin");
+        connectionFactory.setPassword("admin");
 
         // connectionFactory.setc
         return connectionFactory;
     }
 
     //
-    @Bean
+    // @Bean
     public PooledConnectionFactory mqConnectionPool() {
         if (logger.isInfoEnabled()) {
             logger.info("----------------init PooledConnectionFactory ---------------------");
@@ -62,14 +64,14 @@ public class MqConfiguration {
     }
 
     @Bean
-    public JmsTemplate jmsTemplate(PooledConnectionFactory connectionFactory) {
+    public JmsTemplate jmsTemplate(ActiveMQConnectionFactory connectionFactory) {
         JmsTemplate jmsTemplate = new JmsTemplate();
         jmsTemplate.setConnectionFactory(connectionFactory);
         jmsTemplate.setDefaultDestinationName(ORDER_QUEUE);
         return jmsTemplate;
     }
 
-    @Bean
+    // @Bean
     public SimpleMessageListenerContainer simpleMessageListenerContainer(PooledConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer slc = new SimpleMessageListenerContainer();
         slc.setConcurrentConsumers(8);

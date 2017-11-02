@@ -8,6 +8,7 @@ public class Dest {
     private String nick;
     private List<DItem> items;
     private List<DestSku> skus;
+    private String version = "1.0";
 
     public String getName() {
         return name;
@@ -27,7 +28,7 @@ public class Dest {
 
     @Override
     public String toString() {
-        return "Dest [name=" + name + ", age=" + age + ",nick=" + nick + "]";
+        return "Dest [name=" + name + ", age=" + age + ",nick=" + nick + ",version=" + version + "]";
     }
 
     public String getNick() {
@@ -52,5 +53,13 @@ public class Dest {
 
     public void setSkus(List<DestSku> skus) {
         this.skus = skus;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }

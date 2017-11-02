@@ -3,16 +3,16 @@ package org.xfs.core.business.index.advice;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.xfs.core.business.index.web.IndexWeb;
 import org.xfs.core.platform.ExceptionResponse;
 
-@ControllerAdvice(annotations = Controller.class)
+@ControllerAdvice(basePackageClasses = IndexWeb.class)
 public class IndexAdvice {
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)

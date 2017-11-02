@@ -1,23 +1,35 @@
 package org.xfs.core.business.test.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.xfs.core.business.test.model.TestVo;
 import org.xfs.core.business.test.service.CacheService;
 import org.xfs.core.business.test.service.TestService;
 import org.xfs.core.platform.base.web.BaseWeb;
+import org.xfs.core.util.FileManager;
+import org.xfs.core.util.PlatRouteInfoBO;
 import org.xfs.core.util.http.RequestInfoUtil;
 import org.xfs.core.util.json.JsonFormatUtil;
 
 import redis.clients.jedis.JedisCluster;
+
+import com.alibaba.fastjson.JSON;
+
 
 @Controller
 @RequestMapping("/test")
@@ -28,6 +40,8 @@ public class TestWeb extends BaseWeb {
 
     @Resource
     JedisCluster jedisCluster;
+    @Resource
+    private JdbcTemplate jdbcTemplate;
     //
     // @Resource
     // RedisCacheUtil redisCacheUtil;
@@ -88,7 +102,7 @@ public class TestWeb extends BaseWeb {
             // for (int i = 0; i < 1000; i++) {
             // list.add(i);
             // System.out.println(Thread.currentThread().getName() + "now is :" + i);
-            Thread.sleep(300);
+            Thread.sleep(10);
             // }
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
@@ -128,11 +142,64 @@ public class TestWeb extends BaseWeb {
     @RequestMapping("/put")
     @ResponseBody
     public Object put(TestVo vo) {
+        String content;
+        try {
+            content = FileManager.toString("d:\\data.txt", "UTF-8");
+            List<PlatRouteInfoBO> list = JSON.parseArray(content, PlatRouteInfoBO.class);
+            batchInsert(list);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("code", "1");
         map.put("success", true);
         map.put("data", "put" + this.testService.putCache(vo.getKey()));
         map.put("msg", "成功！");
         return map;// a920aac5-a1cc-4747-905c-299076e410e8
+    }
+
+    private void batchInsert(List<PlatRouteInfoBO> list) {
+        final String sql = "INSERT INTO tmp_waybill(way_bill_no,operatorType) VALUE(?,?)";
+        final BlockingQueue<PlatRouteInfoBO> queue = new ArrayBlockingQueue<PlatRouteInfoBO>(50);
+
+        // 多线程池发送数据
+        ExecutorService threadPool = Executors.newFixedThreadPool(30);
+
+        for (int i = 0; i < list.size(); i++) {
+            threadPool.execute(new Runnable() {
+                public void run() {
+                    try {
+                        PlatRouteInfoBO pr = queue.take();
+                        jdbcTemplate.update(sql, new Object[] {pr.getWayBillNo(), pr.getOperatorType()});
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    //
+
+                }
+            });
+        }
+        try {
+            for (PlatRouteInfoBO pr : list) {
+                queue.put(pr);
+            }
+        } catch (Exception e) {
+
+        }
+        threadPool.shutdown();
+    }
+
+    @RequestMapping(value = "/getContent/{name}", produces = "application/json; charset=UTF-8")
+    public @ResponseBody String getContent(@PathVariable String name) {
+        String content = "null";
+        try {
+            content = FileManager.toString("E:\\EDI\\sendOrder.txt", "GBK");
+            System.out.println(content);
+        } catch (Exception e) {
+        }
+        return content;
     }
 }

@@ -81,17 +81,20 @@ public class PrettyMemoryUtils {
         return String.format(formatStr, (size)) + "B";
     }
 
-    public static void main(String[] args) {
-        System.out.println(PrettyMemoryUtils.prettyByteSize(1023));
-        System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT));
-        System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT * UNIT));
-        System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT * 1023));
-        System.out.println(PrettyMemoryUtils.prettyByteSize(1L * 1023 * 1023 * 1023));
-        System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT * UNIT * UNIT));
-        System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT * UNIT * UNIT * UNIT));
-        System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT * UNIT * UNIT * UNIT * UNIT));
-        System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT * UNIT * UNIT * UNIT * UNIT * UNIT));
+    public static void main(String[] args) throws Exception {
+        String content = FileManager.toString("E:\\EDI\\sendOrder.txt", "GBK");
+        long size = content.getBytes().length;
+        System.out.println(content);
+        System.out.println("size is:        " + size);
+        System.out.println("content size is:" + format(Double.parseDouble(size + ""), "KB"));
+        // System.out.println(PrettyMemoryUtils.prettyByteSize(1023));
+        // System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT));
+        // System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT * UNIT));
+        // System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT * 1023));
+        // System.out.println(PrettyMemoryUtils.prettyByteSize(1L * 1023 * 1023 * 1023));
+        // System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT * UNIT * UNIT));
+        // System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT * UNIT * UNIT * UNIT));
+        // System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT * UNIT * UNIT * UNIT * UNIT));
+        // System.out.println(PrettyMemoryUtils.prettyByteSize(1L * UNIT * UNIT * UNIT * UNIT * UNIT * UNIT));
     }
-
-
 }

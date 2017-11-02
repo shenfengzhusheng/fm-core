@@ -19,6 +19,9 @@ public class Source {
     @ListMapping
     private List<SourceSku> skus;
 
+    @Mapping("version")
+    private String version = "2.0";
+
     public Source() {
 
     }
@@ -67,5 +70,13 @@ public class Source {
 
     public void setSkus(List<SourceSku> skus) {
         this.skus = skus;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }

@@ -135,7 +135,7 @@ public class FileManager {
      * @throws Exception
      */
     public static List<String> read(String dir) throws Exception {
-        return read(dir, null);
+        return read(dir, "UTF-8");
     }
 
     /**
@@ -170,42 +170,6 @@ public class FileManager {
             br.close();
         }
         return lineList;
-
-    }
-
-
-    /**
-     * 制定编码读取文件
-     * 
-     * @param dir 文件路径
-     * @param charset 编码格式
-     * @return
-     * @throws Exception
-     */
-    public static String readAsString(String dir) throws Exception {
-        StringBuffer buf = new StringBuffer();
-        FileInputStream fis = new FileInputStream(new File(dir));
-        InputStreamReader isr = null;
-        if (StringUtils.isEmpty("UTF-8")) {
-            isr = new InputStreamReader(fis);
-        } else {
-            isr = new InputStreamReader(fis, "UTF-8");
-        }
-        BufferedReader br = new BufferedReader(isr);
-        try {
-            String str = null;
-            while ((str = br.readLine()) != null) {
-                buf.append(str);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
-            fis.close();
-            isr.close();
-            br.close();
-        }
-        return buf.toString();
 
     }
 
@@ -280,16 +244,8 @@ public class FileManager {
     // ----------------------------------------------------------------------------
     // driver methods
     public static void main(String[] args) throws Exception {
-
-        // String dir = "X:\\xml\\TPL\\TPL_SEND_RK.xml";
-        // System.out.println(toString(dir));
-
-        // String dest = "X:\\TMP\\tmp.txt";
-        // String content = "hello, world!";
-        // write(content, dest);
-        String dpath = "I:\\ad\\xmlfiles\\agency\\inbound\\BAISHI\\BAISHI_Order_20141128095001597.xml";
-        File dfile = new File(dpath);
-        dfile.delete();
+        String content = toString("E:\\EDI\\feiyang\\odb.txt", "gbk");
+        System.out.println(content);
     }
 
     /**
@@ -335,7 +291,7 @@ public class FileManager {
      * @throws Exception
      */
     public static String getProperty(Properties prop, String code) throws Exception {
-        return new String(prop.getProperty(code).getBytes("ISO8859-1"), "UTF-8");
+        return new String(prop.getProperty(code).getBytes(InterfacesConstant.CHARSET_ISO88591), "UTF-8");
     }
 
     // add at 2013-03-25 by yebo
@@ -595,14 +551,18 @@ public class FileManager {
             if (oldfile.exists()) { // 文件存在时
                 InputStream inStream = new FileInputStream(oldPath); // 读入原文件
                 FileOutputStream fs = new FileOutputStream(newPath);
-                byte[] buffer = new byte[1444];
-                int length;
-                while ((byteread = inStream.read(buffer)) != -1) {
-                    bytesum += byteread; // 字节数 文件大小
-                    System.out.println(bytesum);
-                    fs.write(buffer, 0, byteread);
+                try {
+                    byte[] buffer = new byte[1444];
+                    while ((byteread = inStream.read(buffer)) != -1) {
+                        bytesum += byteread; // 字节数 文件大小
+                        System.out.println(bytesum);
+                        fs.write(buffer, 0, byteread);
+                    }
+                } finally {
+                    fs.close();
+                    inStream.close();
+
                 }
-                inStream.close();
             }
         } catch (Exception e) {
             System.out.println("复制单个文件操作出错");
