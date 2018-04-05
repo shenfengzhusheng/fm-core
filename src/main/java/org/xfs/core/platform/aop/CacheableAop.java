@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.xfs.core.platform.anntation.cache.RedisCache;
-import org.xfs.core.platform.cache.service.RedisCacheService;
+import org.xfs.core.platform.config.cache.service.RedisCacheService;
 
 
 @Aspect

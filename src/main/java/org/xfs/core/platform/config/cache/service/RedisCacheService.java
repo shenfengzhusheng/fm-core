@@ -1,4 +1,4 @@
-package org.xfs.core.platform.cache.service;
+package org.xfs.core.platform.config.cache.service;
 
 
 import javax.annotation.Resource;
