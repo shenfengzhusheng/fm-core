@@ -7,7 +7,7 @@ import java.util.Date;
 public class DateUtil {
 	
 	public static String getYearMonth(){
-		return new SimpleDateFormat("yyyy-MM").format(new Date());
+		return new SimpleDateFormat("yyyy-MM").format(new Date()); 
 	}
 	
 	public static String getNowDay(){
@@ -15,7 +15,7 @@ public class DateUtil {
 	}
 	
 	public static String getNowDayChs(){
-		return new SimpleDateFormat("yyyy年MM月dd HH:mm:ss").format(new Date());
+		return new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date());
 	}
 	
 	public static String getNowTime(){
