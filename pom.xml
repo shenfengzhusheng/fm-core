@@ -328,7 +328,13 @@
 	     <artifactId>protostuff-runtime</artifactId>  
 	     <version>1.0.8</version>  
 	 </dependency> 
-	 
+	         
+        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+		<dependency>
+		    <groupId>io.netty</groupId>
+		    <artifactId>netty-all</artifactId>
+		    <version>4.1.22.Final</version>
+		</dependency>
 	 <!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor -->
 	 <!--  <dependency>
         <groupId>org.mapstruct</groupId>
