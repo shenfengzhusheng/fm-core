@@ -9,7 +9,7 @@ public class RealBusiness extends AbstractBusiness {
 	protected String check(Object object) {
 		if(object instanceof String) {
 			if(object.toString().equals("yes")) {
-				return "yes is true";
+				return "yes is true!";
 			}
 		} 
 		return object.toString();
