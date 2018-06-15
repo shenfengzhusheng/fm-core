@@ -11,7 +11,7 @@ public class RealBusiness extends AbstractBusiness {
 			if(object.toString().equals("yes")) {
 				return "true";
 			}
-		}
+		} 
 		return object.toString();
 	}
 
