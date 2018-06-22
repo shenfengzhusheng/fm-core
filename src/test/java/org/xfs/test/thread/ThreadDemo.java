@@ -5,7 +5,7 @@ import java.util.concurrent.CountDownLatch;
 public class ThreadDemo {
 
     public static void main(String[] args) {
-        int size = 1000;
+        int size = 6;
         CountDownLatch latch = new CountDownLatch(size);
         for (int i = 0; i < size; i++) {
             final int c = i;

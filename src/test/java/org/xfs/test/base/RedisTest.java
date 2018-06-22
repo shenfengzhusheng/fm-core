@@ -18,7 +18,6 @@ public class RedisTest {
 	public static void main(String[] args) {
 		JedisCluster jc=getJedisCulster();
 		logger.info("===="+jc);
-		// TODO Auto-generated method stub
 		jc.set("tt", "JedisCluster");
 		System.out.println(jc.get("tt"));
 	}
