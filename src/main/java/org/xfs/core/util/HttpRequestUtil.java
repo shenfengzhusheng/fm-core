@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Base64;
 import java.util.Map;
 
 import org.xfs.core.business.index.model.Person;
@@ -59,7 +60,7 @@ public class HttpRequestUtil {
                 String password = "password";
                 String input = userName + ":" + password; // 用户名以及登录密码
                 if (input != null && input.trim().length() > 0) {
-                    String encoding = new sun.misc.BASE64Encoder().encode(input.getBytes());
+                    String encoding =Base64.getEncoder().encodeToString(input.getBytes());
                     conn.setRequestProperty("Authorization", "Basic   " + encoding); // 设置用户名，用户密码
                     conn.setRequestProperty("Content-Type", contentType);
                 }
@@ -123,7 +124,6 @@ public class HttpRequestUtil {
     }
 
 
-    @SuppressWarnings("unchecked")
     public static String doSend(String url, String content, String method, Integer verification, String contentType, String charset) {
         StringBuffer buf = new StringBuffer();
         HttpURLConnection conn = null;
@@ -144,7 +144,7 @@ public class HttpRequestUtil {
                 String password = "password";
                 String input = userName + ":" + password; // 用户名以及登录密码
                 if (input != null && input.trim().length() > 0) {
-                    String encoding = new sun.misc.BASE64Encoder().encode(input.getBytes());
+                    String encoding =Base64.getEncoder().encodeToString(input.getBytes());
                     conn.setRequestProperty("Authorization", "Basic   " + encoding); // 设置用户名，用户密码
                 }
             }
@@ -235,7 +235,7 @@ public class HttpRequestUtil {
                 String password = "password";
                 String input = userName + ":" + password; // 用户名以及登录密码
                 if (input != null && input.trim().length() > 0) {
-                    String encoding = new sun.misc.BASE64Encoder().encode(input.getBytes());
+                    String encoding = Base64.getEncoder().encodeToString(input.getBytes());
                     conn.setRequestProperty("Authorization", "Basic   " + encoding); // 设置用户名，用户密码
                     conn.setRequestProperty("Content-Type", contentType);
                 }

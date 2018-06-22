@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.xfs.core.business.index.model.Person;
 import org.xfs.core.platform.anntation.cache.RedisCache;
-import org.xfs.core.platform.cache.service.RedisCacheService;
+import org.xfs.core.platform.config.cache.service.RedisCacheService;
 
 @Service
 public class CacheService {
@@ -39,7 +39,7 @@ public class CacheService {
 	        per.setSex(0);
 	        list.add(per);
     	}
-    //    this.redisCacheService.setObject("test", 1200, list);
+        this.redisCacheService.setObject("test", 1200, list);
         return list;
     }
 }

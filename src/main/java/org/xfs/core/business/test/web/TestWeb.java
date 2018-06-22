@@ -28,7 +28,6 @@ import org.xfs.core.util.json.JsonFormatUtil;
 
 import redis.clients.jedis.JedisCluster;
 
-import com.alibaba.fastjson.JSON;
 
 
 @Controller
@@ -84,9 +83,11 @@ public class TestWeb extends BaseWeb {
             System.out.println("----------------------------------->" + this.jedisCluster.get("88gun"));
             // System.out.println("----------------------cached--------->"+this.redisCacheUtil.set("oper", "中国", 8000));
             // System.out.println("----------------------cached--------->" + this.redisCacheUtil.get("oper"));
-            obj = this.cacheService.getPerson("key");
+         //   obj = this.cacheService.getPerson("key");
+            obj=this.testService.cache(vo.getKey());
             System.out.println("----------------------cached--------->" + obj);
-            // System.out.println("----------------------cached--------->" + this.testService.cache("key"));
+
+           //  System.out.println("----------------------cached--------->" + this.testService.cache("key"));
             // TestPo t=new TestPo();
             // t.setCode("1");
             // List<TestPo>list2=this.testService.list(t, 6, 8);
@@ -143,20 +144,20 @@ public class TestWeb extends BaseWeb {
     @ResponseBody
     public Object put(TestVo vo) {
         String content;
-        try {
-            content = FileManager.toString("d:\\data.txt", "UTF-8");
-            List<PlatRouteInfoBO> list = JSON.parseArray(content, PlatRouteInfoBO.class);
-            batchInsert(list);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        try {
+//            content = FileManager.toString("d:\\data.txt", "UTF-8");
+//            List<PlatRouteInfoBO> list = JSON.parseArray(content, PlatRouteInfoBO.class);
+//            batchInsert(list);
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("code", "1");
         map.put("success", true);
-        map.put("data", "put" + this.testService.putCache(vo.getKey()));
         map.put("msg", "成功！");
+        map.put("data", "put" + this.testService.putCache(vo.getKey()));
         return map;// a920aac5-a1cc-4747-905c-299076e410e8
     }
 
